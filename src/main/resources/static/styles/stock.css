@@ -1,0 +1,33 @@
+.form {
+    width: 90%;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+}
+
+fieldset input, fieldset select {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+fieldset button {
+    margin-top: 3px;
+}
+
+#cloth_table {
+    display: flex;
+    flex-direction: column;
+}
+
+#cloth_table table {
+    font-size: .7em;
+    width: 90%;
+    margin-top: 5px;
+}
+
+#cloth_table table input {
+    width: 100%;
+}

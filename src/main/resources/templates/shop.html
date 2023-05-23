@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+    <link th:href="@{/styles/style.css}" rel="stylesheet" />
+    <link th:href="@{/styles/shop.css}" rel="stylesheet" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/shop.js}"></script>
+</head>
+<body>
+<header>
+    <a id="logo-ref" th:href="@{/shop}">
+        <h1>qStore</h1>
+    </a>
+    <nav class="menu" id="menu">
+        <a th:href="@{/shop}">Магазин</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/userpage}">Профиль</a>
+        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/stock}">Склад</a>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Войти</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+    </nav>
+    <div class="dropdown-menu-container">
+        <div class="activator" id="activator"></div>
+        <nav class="dropdown-menu" id="dropdown-menu">
+            <a th:href="@{/shop}">Магазин</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/userpage}">Профиль</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/stock}">Склад</a>
+            <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Войти</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+        </nav>
+    </div>
+</header>
+<figure class="loader">
+    <span></span><span></span>
+    <span></span><span></span>
+    <span></span><span></span>
+    <span></span><span></span>
+</figure>
+<section id="shop">
+    <div class="sidebar__main">
+        <h2 class="sidebar__title" th:text="${'Одежда(' + clothes.getTotalElements() + ')'}"></h2>
+        <div class="sidebar__category">
+            <div class="sidebar__heading">Тип</div>
+            <select class="sidebar__select">
+                <option th:selected="${sort_type == null}" th:value="${null}"></option>
+                <option th:each="type : ${types}" th:selected="${sort_type == type}" th:value="${type}" th:text="${type.getType()}"></option>
+            </select>
+        </div>
+        <div class="sidebar__category">
+            <div class="sidebar__heading">Размер</div>
+            <div id="sidebar__size">
+                <input type="number" class="sidebar__size" name="size" th:value="${size}">
+            </div>
+        </div>
+        <div class="sidebar__category">
+            <div class="sidebar__heading">Цена</div>
+            <div id="sidebar__min_max">
+            <input type="number" min="0" th:max="${max}" class="sidebar__min" name="min" th:value="${min}">
+            <input type="number" th:min="${min}" max="9999" class="sidebar__max" name="max" th:value="${max}">
+            </div>
+        </div>
+
+        <div class="sidebar__category">
+            <div class="sidebar__heading">Цвет</div>
+            <div class="sidebar__options" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                <a th:each="color : ${colors}" th:href="${(sort_color != color)?urlBuilder.replaceQueryParam('color', color).replaceQueryParam('page').toUriString():urlBuilder.replaceQueryParam('color').replaceQueryParam('page').toUriString()}">
+                    <div th:classappend="${(sort_color == color)? 'sort_color' : ''}" class="color" th:style="${'background-color: ' + color.getRGB()}"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="sorting">
+        <select class="sorting__select">
+            <option th:selected="${sorting == 'id'}" value="id" >По умолчанию</option>
+            <option th:selected="${sorting == 'priceAsc'}" value="priceAsc">По возрастанию</option>
+            <option th:selected="${sorting == 'priceDesc'}" value="priceDesc">По убыванию</option>
+        </select>
+    </div>
+    <span th:if="${clothes.getTotalElements() == 0}" id="items_not_found">Одежда не найдена</span>
+    <div th:if="${clothes.getTotalElements() > 0}" class="items">
+        <div class="item" th:each="cloth : ${clothes}" th:if="${cloth.getAmount() > 0}">
+            <img th:src="${cloth.getPicture_url()}" th:alt="${cloth.getName()}">
+            <h1 class="item__name" th:text="${cloth.getName()}"></h1>
+            <div class="item__detail">
+                <h2 class="item__type" th:text="${cloth.getType().getType()}"></h2>
+                <h2 class="item__type" th:text="${'размер: ' + cloth.getSize()}"></h2>
+                <h2 class="item__price" th:text="${cloth.getPrice() + 'руб'}"></h2>
+            </div>
+            <form sec:authorize="isAuthenticated()" th:action="@{/userpage/{user_id}/{id}(id=${cloth.getId()}, user_id=${#authentication.principal.id})}" th:method="POST">
+                <input type="submit" value="Добавить в корзину" />
+            </form>
+        </div>
+    </div>
+    <div th:if="${clothes.getTotalElements() > 0}" class="pagination">
+        <div class="pagination__page" th:text="${'Page ' + (clothes.getNumber() + 1) + ' of ' + clothes.getTotalPages()}"></div>
+        <div class="pagination__links">
+            <a th:if="${clothes.getNumber() > 0}" th:href="${'/shop?page=' + (clothes.getNumber() - 1)}" class="pagination__link">
+                <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: var(--s)" stroke="black">
+                    <path d="M19 12.5H5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 19.5L5 12.5L12 5.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg> Пред. страница
+            </a>
+            <a th:if="${(clothes.getNumber() + 1) < clothes.getTotalPages()}" th:href="${'/shop?page=' + (clothes.getNumber() + 1)}" class="pagination__link">След. страница <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: var(--s)" stroke="black">
+                <path d="M5 12.5H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 5.5L19 12.5L12 19.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            </a>
+        </div>
+    </div>
+</section>
+<footer>
+    <div class="row">
+        <a href="#"><i class="fa fa-instagram"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+        <a href="#"><i class="fa fa-facebook"></i></a>
+    </div>
+
+    <div class="row">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="contacts.html">Contact us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+    </div>
+    <div class="row">qStore Copyright © 2023 qStore - All rights reserved</div>
+</footer>
+</body>
+</html>

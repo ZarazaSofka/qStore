@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Oswald&display=swap');
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css);
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  font-family: sans-serif;
+  background: #490005;
+  color: white;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+}
+html::-webkit-scrollbar-track {
+  background-color: #370F11;
+  border-radius: 15vh;
+}
+html::-webkit-scrollbar-thumb {
+  border-radius: 15vh;
+  background-image: radial-gradient(circle, rgba(106,1,15,1) 0%, rgba(99,8,25,1) 44%, rgba(36,0,5,1) 85%, rgba(0,0,0,0) 100%);
+}
+html::-webkit-scrollbar-thumb:hover {
+  background-image: radial-gradient(circle, rgba(106,1,15,1) 0%, rgba(99,8,25,1) 55%, rgba(36,0,5,1) 90%);
+}
+
+header,
+nav,
+section,
+.content-container,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== Menu ==========*/
+header {
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  padding: 12px calc(15px + 2vw);
+  background: #2F0009;
+  box-shadow: 0 5px 20px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+#logo-ref h1 {
+  margin-left: 5px;
+  font-size: 2rem;
+  font-family: 'Amatic SC';
+  color: white;
+  transition: 0.3s;
+}
+#logo-ref:hover h1 {
+  transform: scale(1.1);
+}
+
+.menu {
+  width: max-content;
+  justify-content: space-between;
+}
+.menu a, .dropdown-menu a {
+  font-size: 1.1rem;
+  font-family: 'Amatic SC';
+  white-space: nowrap;
+  text-decoration: none;
+  color: #fff;
+  font-stretch: 150%;
+  text-transform: uppercase;
+  letter-spacing: .08rem;
+}
+.menu a {
+  padding: 5px 2vw;
+  border: 1px solid transparent;
+  border-radius: 0.3em;
+  transition: 0.3s;
+}
+.menu a:hover {
+  background-color: #280107;
+  border: 1px solid #570107;
+}
+.dropdown-menu-container {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+  width: 9rem;
+}
+.activator {
+  --h: .5rem;
+  height: var(--h);
+  width: var(--h);
+  padding: 1em;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+  position: relative;
+}
+.activator:hover::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  background-color: #400008;
+}
+.activator::after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  background-image: url('../images/menu.svg');
+  background-size: cover;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  transform: translateY(calc(2em - 2px));
+  flex-direction: column;
+  justify-content: space-between;
+  height: 13.5em;
+  background: #4E020B;
+  border-radius: 3em 0 3em 3em;
+}
+.dropdown-menu a {
+  width: 9rem;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #440008;
+  border-right: 2px solid #400008;
+  border-left: 2px solid #4E020B;
+}
+.dropdown-menu a:first-child {
+  border-top-left-radius: 2em;
+  border-top: 2px solid #4E020B;
+}
+.dropdown-menu a:last-child {
+  border-radius: 0 0 2em 2em;
+  border-bottom: 2px solid #4E020B;
+}
+.dropdown-menu a:hover {
+  background-color: #320107;
+}
+
+/* ========== Loader ==========*/
+.loader {
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(0deg) scale(1.4,1.4);
+  z-index: 1;
+  animation:rotation 30s infinite linear;
+}
+.loader span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%;);
+}
+.loader span::after {
+  content:"";
+  width: 2vw;
+  height: 2vw;
+  border:1px solid rgb(255, 206, 208);
+  box-sizing:border-box;
+  position:absolute;
+  left: 2vw;
+  top: 2vw;
+  animation:shuffle 2s infinite;
+}
+
+figure span:nth-child(1){transform:rotate(0deg)}
+figure span:nth-child(1)::after{animation-delay:-0.5s;}
+figure span:nth-child(2){transform:rotate(45deg)}
+figure span:nth-child(2)::after{animation-delay:-1s;}
+figure span:nth-child(3){transform:rotate(90deg)}
+figure span:nth-child(3)::after{animation-delay:-1.5s;}
+figure span:nth-child(4){transform:rotate(135deg)}
+figure span:nth-child(4)::after{animation-delay:-2s;}
+figure span:nth-child(5){transform:rotate(180deg)}
+figure span:nth-child(5)::after{animation-delay:-2.5s;}
+figure span:nth-child(6){transform:rotate(225deg)}
+figure span:nth-child(6)::after{animation-delay:-3s;}
+figure span:nth-child(7){transform:rotate(270deg)}
+figure span:nth-child(7)::after{animation-delay:-3.5s;}
+figure span:nth-child(8){transform:rotate(315deg)}
+figure span:nth-child(8)::after{animation-delay:-4;}
+
+@keyframes rotation{
+  100%{transform:translate(-50%,-50%) rotate(-360deg) scale(1.4,1.4);}
+}
+@keyframes shuffle{
+  50%{transform:scale(0.4,0.4) rotate(-90deg);border-radius:50%;}
+}
+
+/* ========== Hero Section ==========*/
+section {
+  width: 80%;
+  min-height: 100vh;
+  background-color: #400008;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: -1;
+  border-left: 1vw solid rgba(0, 0, 0, .05);
+  border-right: 1vw solid rgba(0, 0, 0, .05);
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ========== Footer ==========*/
+footer{
+  background: #2F0009;
+  padding:30px 0px;
+  text-align:center;
+  box-shadow: 0 0 3px 3px rgba(0,0,0,.3);
+}
+
+footer .row{
+  width:100%;
+  margin:1% 0%;
+  padding:0.6% 0%;
+  color: #FFCED0;
+  font-size:0.8em;
+}
+
+footer .row a{
+  text-decoration:none;
+  color:#FFCED0;
+  transition:0.5s;
+}
+
+footer .row a:hover{
+  color:#fff;
+}
+
+footer .row ul{
+  width:100%;
+  display: flex;
+  flex-direction: row;
+}
+
+footer .row ul li{
+  display:inline-block;
+  margin:0px 1rem;
+}
+
+footer .row a i{
+  font-size:2em;
+  margin:0% 1%;
+}
+
+@media screen and (max-width: 500px) {
+ .dropdown-menu-container {
+   display: flex;
+ }
+ .menu {
+   display: none;
+ }
+ section {
+   width: 100%;
+ }
+}
+@media screen and (max-width: 750px) {
+  footer .row ul{
+    flex-direction: column;
+  }
+}

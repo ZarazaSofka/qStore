@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Доступ запрещен</title>
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+  <link th:href="@{/styles/style.css}" rel="stylesheet" />
+  <link th:href="@{/styles/error.css}" rel="stylesheet" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+  <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+</head>
+<body>
+<header>
+  <a id="logo-ref" th:href="@{/shop}">
+    <h1>qStore</h1>
+  </a>
+  <nav class="menu" id="menu">
+    <a th:href="@{/shop}">Магазин</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/userpage}">Профиль</a>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/stock}">Склад</a>
+    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Войти</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+  </nav>
+  <div class="dropdown-menu-container">
+    <div class="activator" id="activator"></div>
+    <nav class="dropdown-menu" id="dropdown-menu">
+      <a th:href="@{/shop}">Магазин</a>
+      <a sec:authorize="isAuthenticated()" th:href="@{/userpage}">Профиль</a>
+      <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/stock}">Склад</a>
+      <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Войти</a>
+      <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+    </nav>
+  </div>
+</header>
+<figure class="loader">
+  <span></span><span></span>
+  <span></span><span></span>
+  <span></span><span></span>
+  <span></span><span></span>
+</figure>
+<section id="error">
+<div>
+  <h1>Доступ запрещен</h1>
+  <p>Сюда нельзя</p>
+</div>
+</section>
+<footer>
+  <div class="row">
+    <a href="#"><i class="fa fa-instagram"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    <a href="#"><i class="fa fa-linkedin"></i></a>
+    <a href="#"><i class="fa fa-facebook"></i></a>
+  </div>
+
+  <div class="row">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="contacts.html">Contact us</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms & Conditions</a></li>
+    </ul>
+  </div>
+  <div class="row">qStore Copyright © 2023 qStore - All rights reserved</div>
+</footer>
+</body>
+</html>

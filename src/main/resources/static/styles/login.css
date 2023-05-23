@@ -1,0 +1,32 @@
+form {
+    width: 80%;
+}
+
+fieldset {
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-row-gap: 1em;
+}
+
+fieldset input {
+    background-color: #322;
+    color: #aaa;
+}
+
+.form-actions {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.form-actions button {
+    width: 80%;
+    border-radius: 1em;
+    background-color: #322;
+    color: #aaa;
+}
+
+a:link {color: white;}
+a:hover {color: #aaa;}
+a:visited {color: white;}
+a:focus {outline: none;}

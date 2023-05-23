@@ -1,0 +1,20 @@
+#user_page {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+#user_page h1 {
+    margin: 20px 0 10px 0;
+}
+
+#user_page div {
+    width: 100%;
+}
+
+#basket {
+    font-size: .7em;
+    width: 100%;
+    margin-top: 5px;
+}
